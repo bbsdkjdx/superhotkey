@@ -225,6 +225,7 @@ void CMFCApplication3Dlg::OnEditItem()
 {
 	m_edit_cmnt.SetReadOnly(FALSE);
 	m_edit_code.SetReadOnly(FALSE);
+	m_hotkey.EnableWindow(TRUE);
 }
 
 
@@ -251,15 +252,29 @@ void CMFCApplication3Dlg::OnSaveItem()
 			m_hkitm.pycode = m_str_pycode;
 		}
 	}
-	else//just save comment and code to a exist one.
+	else//save an exist one.
 	{
 		int idx = m_list.GetNextSelectedItem(pos);
 		HKItem *p = (HKItem*)m_list.GetItemData(idx);
 		p->cmnt = m_str_comment;
 		p->pycode = m_str_pycode;
 		m_list.SetItemText(idx, 1, m_str_comment);
+
+		if (p->hk!=m_hotkey.GetHotKey())//change the hotkey.
+		{
+			UnregisterHotKey(m_hWnd, p->hk);
+			p->hk = m_hotkey.GetHotKey();
+			p->hk_name = m_hotkey.GetHotKeyName();
+			m_list.SetItemText(idx, 0,p->hk_name);
+			if (p->hk)
+			{
+				RegisterHotKey(m_hWnd, p->hk, p->hk >> 8, p->hk & 0xff);
+			}
+		}
+
 		m_edit_cmnt.SetReadOnly(TRUE);
 		m_edit_code.SetReadOnly(TRUE);
+		m_hotkey.EnableWindow(FALSE);
 	}
 }
 
