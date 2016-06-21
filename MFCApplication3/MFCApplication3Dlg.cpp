@@ -197,7 +197,16 @@ void CMFCApplication3Dlg::OnCancel()
 void CMFCApplication3Dlg::OnEval()
 {
 	UpdateData();
-	m_str_result=PyEval(m_str_pycode.GetBuffer());
+	int cs = 0, ce = 0;
+	m_edit_code.GetSel(cs, ce);
+	if (cs == ce)
+	{
+		m_str_result = PyExec(m_str_pycode.GetBuffer());
+	}
+	else
+	{
+		m_str_result = PyEval(m_str_pycode.Mid(cs, ce - cs).GetBuffer());
+	}
 	UpdateData(FALSE);
 }
 
