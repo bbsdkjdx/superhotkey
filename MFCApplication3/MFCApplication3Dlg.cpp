@@ -201,7 +201,7 @@ void CMFCApplication3Dlg::OnEval()
 	m_edit_code.GetSel(cs, ce);
 	if (cs == ce)
 	{
-		m_str_result = PyExec(m_str_pycode.GetBuffer());
+		m_str_result = PyEval(m_str_pycode.GetBuffer());
 	}
 	else
 	{
