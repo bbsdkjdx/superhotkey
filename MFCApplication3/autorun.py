@@ -1,27 +1,31 @@
-####set add_itm function for load config.
-from ctypes import CFUNCTYPE,c_int32,c_wchar_p
+import ctypes,os,json
+from shellexecute import shell_execute
+from clipboard import *
+from ctypes import CFUNCTYPE, c_int32, c_wchar_p
+###########do load and save#######################
+
 add_itm=CFUNCTYPE(c_int32,c_int32,c_wchar_p,c_wchar_p,c_wchar_p)(g_pdlg)
+config = []
 
-itm_sep='<itm>'
-field_sep='<field>'
-items=[]
-
-def add_item(hk,name,cmnt,code):
-    items.append(field_sep.join([hk,name,cmnt,code]))
+def add_item(hk, name, cmnt, code):
+    config.append((hk, name, cmnt, code))
 
 def save():
-    with open('config.cfg','w') as f:
-        for x in items:
-            f.write(x+itm_sep)
+    global config
+    json.dump(config,open('config.json','w'))
+    config=[]
 
 def load():
-    with open('config.cfg') as f:
-        for itm in f.read().split(itm_sep)[:-1]:
-            itm=itm.replace('\n','\r\n')
-            hk,name,cmnt,code= itm.split(field_sep)
-            hk=int(hk)
-            add_itm(hk,name,cmnt,code)
+    config=json.load(open('config.json','r'))
+    for hk, name, cmnt, code in config:
+        cmnt = cmnt.replace('\n', '\r\n')
+        code = code.replace('\n', '\r\n')
+        hk=int(hk)
+        add_itm(hk,name,cmnt,code)
+
 try:
     load()
-except:
+except Exception as exp:
+    ctypes.windll.user32.MessageBoxW(0,str(exp),'',0)
     pass
+##########################################################################
