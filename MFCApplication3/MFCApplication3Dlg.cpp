@@ -106,7 +106,7 @@ BOOL CMFCApplication3Dlg::OnInitDialog()
 	InitPython();
 	CString tmp;
 	tmp.Format(_T("g_pdlg=%d"),&g_add_item);
-	PyExec(tmp.GetBuffer());//tell g_pdlg to python.
+	PyExecW(tmp.GetBuffer());//tell g_pdlg to python.
 	m_str_result=PyRunFile(_T("autorun.py"));
 	UpdateData(FALSE);
 	UpdateControls();
@@ -201,11 +201,11 @@ void CMFCApplication3Dlg::OnEval()
 	m_edit_code.GetSel(cs, ce);
 	if (cs == ce)
 	{
-		m_str_result = PyEval(m_str_pycode.GetBuffer());
+		m_str_result = PyEvalW(m_str_pycode.GetBuffer());
 	}
 	else
 	{
-		m_str_result = PyEval(m_str_pycode.Mid(cs, ce - cs).GetBuffer());
+		m_str_result = PyEvalW(m_str_pycode.Mid(cs, ce - cs).GetBuffer());
 	}
 	UpdateData(FALSE);
 }
@@ -219,11 +219,11 @@ void CMFCApplication3Dlg::OnExec()
 	m_edit_code.GetSel(cs, ce);
 	if (cs==ce)
 	{
-		m_str_result = PyExec(m_str_pycode.GetBuffer());
+		m_str_result = PyExecW(m_str_pycode.GetBuffer());
 	}
 	else
 	{
-		m_str_result = PyExec(m_str_pycode.Mid(cs, ce - cs).GetBuffer());
+		m_str_result = PyExecW(m_str_pycode.Mid(cs, ce - cs).GetBuffer());
 	}
 	UpdateData(FALSE);
 }
@@ -314,7 +314,7 @@ void CMFCApplication3Dlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		HKItem *pitm = (HKItem*)m_list.GetItemData(x);
 		if (pitm->hk==nHotKeyId)
 		{
-			m_str_result=PyExec(pitm->pycode.GetBuffer());
+			m_str_result=PyExecW(pitm->pycode.GetBuffer());
 			UpdateData(FALSE);
 			break;
 		}
@@ -338,12 +338,12 @@ void CMFCApplication3Dlg::SaveConfig()
 	{
 		HKItem* pitm = (HKItem*)m_list.GetItemData(x);
 		tmp.Format(_T("add_item(r\"\"\"%d\"\"\",r\"\"\"%s\"\"\",r\"\"\"%s\"\"\",r\"\"\"%s\"\"\")"),pitm->hk,pitm->hk_name,pitm->cmnt,pitm->pycode);
-		PyExec(tmp.GetBuffer());
+		PyExecW(tmp.GetBuffer());
 	}
 	//save blank item.
 	tmp.Format(_T("add_item(r\"\"\"%d\"\"\",r\"\"\"%s\"\"\",r\"\"\"%s\"\"\",r\"\"\"%s\"\"\")"), 0, m_hkitm.hk_name,m_hkitm.cmnt, m_hkitm.pycode);
-	PyExec(tmp.GetBuffer());
-	PyExec(_T("save()"));
+	PyExecW(tmp.GetBuffer());
+	PyExecW(_T("save()"));
 }
 
 
