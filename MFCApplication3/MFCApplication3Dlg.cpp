@@ -173,7 +173,7 @@ BOOL CMFCApplication3Dlg::DestroyWindow()
 {
 	// TODO:  在此添加专用代码和/或调用基类
 	Shell_NotifyIcon(NIM_DELETE, &m_tnid);//NIM_MODIFY为更改托盘 NIM_DELETE为删除托盘
-	SaveConfig();
+	//SaveConfig();
 	return CDialogEx::DestroyWindow();
 }
 
@@ -285,6 +285,7 @@ void CMFCApplication3Dlg::OnSaveItem()
 		m_edit_code.SetReadOnly(TRUE);
 		m_hotkey.EnableWindow(FALSE);
 	}
+	SaveConfig();
 }
 
 
