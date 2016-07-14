@@ -16,6 +16,7 @@ struct HKItem
 	CString pycode;
 };
 
+const UINT WM_TaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
 
 // CMFCApplication3Dlg ¶Ô»°¿ò
 class CMFCApplication3Dlg : public CDialogEx
@@ -89,4 +90,5 @@ public:
 	afx_msg void OnNcPaint();
 protected:
 	bool m_can_show;
+	afx_msg LRESULT OnTaskbarrestart(WPARAM wParam, LPARAM lParam);
 };

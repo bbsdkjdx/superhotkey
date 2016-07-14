@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication3Dlg, CDialogEx)
 //	ON_EN_CHANGE(IDC_EDIT3, &CMFCApplication3Dlg::OnEnChangeEdit3)
 //ON_WM_KEYDOWN()
 ON_WM_NCPAINT()
+ON_REGISTERED_MESSAGE(WM_TaskbarRestart, &CMFCApplication3Dlg::OnTaskbarrestart)
 END_MESSAGE_MAP()
 
 
@@ -419,4 +420,11 @@ void CMFCApplication3Dlg::OnNcPaint()
 		return;
 	}
 	CDialogEx::OnNcPaint();
+}
+
+
+afx_msg LRESULT CMFCApplication3Dlg::OnTaskbarrestart(WPARAM wParam, LPARAM lParam)
+{
+	Shell_NotifyIcon(NIM_ADD, &m_tnid);
+	return 0;
 }
