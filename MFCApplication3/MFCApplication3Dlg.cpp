@@ -22,6 +22,7 @@ CMFCApplication3Dlg::CMFCApplication3Dlg(CWnd* pParent /*=NULL*/)
 	, m_str_pycode(_T(""))
 	, m_str_result(_T(""))
 	, m_str_comment(_T(""))
+	, m_can_show(false)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -60,6 +61,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication3Dlg, CDialogEx)
 	ON_EN_SETFOCUS(IDC_EDIT1, &CMFCApplication3Dlg::OnEnSetfocusCode)
 //	ON_EN_CHANGE(IDC_EDIT3, &CMFCApplication3Dlg::OnEnChangeEdit3)
 //ON_WM_KEYDOWN()
+ON_WM_NCPAINT()
 END_MESSAGE_MAP()
 
 
@@ -119,6 +121,11 @@ BOOL CMFCApplication3Dlg::OnInitDialog()
 
 void CMFCApplication3Dlg::OnPaint()
 {
+	if (!m_can_show)
+	{
+		return;
+	}
+
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // 用于绘制的设备上下文
@@ -160,6 +167,7 @@ LRESULT CMFCApplication3Dlg::TrayFunction(WPARAM wp, LPARAM lp)
 		CDialogEx::OnOK();
 		break;
 	case  WM_LBUTTONDBLCLK:
+		m_can_show = true;
 		ShowWindow(1);
 		break;
 	default:
@@ -303,6 +311,7 @@ void CMFCApplication3Dlg::OnDeleteItem()
 		delete pitm;
 		m_list.DeleteItem(p);
 	}
+	SaveConfig();
 }
 
 
@@ -400,3 +409,14 @@ void CMFCApplication3Dlg::UpdateControls()
 	m_hotkey.EnableWindow(pitm == &m_hkitm);
 }
 
+
+void CMFCApplication3Dlg::OnNcPaint()
+{
+
+	if (!m_can_show)
+	{
+		ShowWindow(0);
+		return;
+	}
+	CDialogEx::OnNcPaint();
+}

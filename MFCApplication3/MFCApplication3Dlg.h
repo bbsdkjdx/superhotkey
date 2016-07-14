@@ -86,4 +86,7 @@ protected:
 	void UpdateControls();
 public:
 //	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnNcPaint();
+protected:
+	bool m_can_show;
 };
