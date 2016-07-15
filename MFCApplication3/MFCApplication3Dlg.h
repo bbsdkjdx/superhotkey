@@ -91,4 +91,5 @@ public:
 protected:
 	bool m_can_show;
 	afx_msg LRESULT OnTaskbarrestart(WPARAM wParam, LPARAM lParam);
+	void SetCurrentDir();
 };

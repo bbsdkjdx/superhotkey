@@ -84,12 +84,11 @@ int g_add_item(DWORD hk,wchar_t *hkname, wchar_t *cmnt, wchar_t *pycode)
 BOOL CMFCApplication3Dlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
+	SetCurrentDir();
 	// 设置此对话框的图标。  当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
-
 	g_pdlg = this;
 	// add sys tray.
 	m_tnid.cbSize = sizeof(NOTIFYICONDATA);
@@ -427,4 +426,14 @@ afx_msg LRESULT CMFCApplication3Dlg::OnTaskbarrestart(WPARAM wParam, LPARAM lPar
 {
 	Shell_NotifyIcon(NIM_ADD, &m_tnid);
 	return 0;
+}
+
+
+void CMFCApplication3Dlg::SetCurrentDir()
+{
+	wchar_t szExeFilePathFileName[MAX_PATH];
+	GetModuleFileName(NULL, szExeFilePathFileName, MAX_PATH);
+	CString str = szExeFilePathFileName;
+	str = str.Mid(0, str.ReverseFind(_T('\\')));
+	SetCurrentDirectory(str.GetBuffer());
 }
